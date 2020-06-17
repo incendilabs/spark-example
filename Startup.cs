@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Spark.Engine;
 using Spark.Engine.Extensions;
 using Spark.Mongo.Extensions;
@@ -22,34 +18,29 @@ namespace spark_example
         {
             // Set up a default policy for CORS that accepts any origin, method and header.
             // only for test purposes.
-            // services.AddCors(options =>
-            //     options.AddDefaultPolicy(policy =>
-            //     {
-            //         policy.AllowAnyOrigin();
-            //         policy.AllowAnyMethod();
-            //         policy.AllowAnyHeader();
-            //     }));
-            
-            services.AddFhir(new SparkSettings
+            services.AddCors(options =>
+                options.AddDefaultPolicy(policy =>
+                {
+                    policy.AllowAnyOrigin();
+                    policy.AllowAnyMethod();
+                    policy.AllowAnyHeader();
+                }));
+
+            services.AddFhir(new SparkSettings 
             {
-                Endpoint = new System.Uri("https://localhost:5001/fhir")
-            });
+                Endpoint = new Uri("https://localhost:5001/fhir") 
+            }, 
+            options => options.EnableEndpointRouting = false
+            ).SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+
             services.AddMongoFhirStore(new StoreSettings
             {
-                ConnectionString = "mongodb://localhost:27017/spark-r4"
+                ConnectionString = "mongodb://localhost/spark-r4"
             });
-
-            services.AddMvc(options =>
-            {
-                options.InputFormatters.RemoveType<JsonPatchInputFormatter>();
-                options.InputFormatters.RemoveType<JsonInputFormatter>();
-                options.OutputFormatters.RemoveType<JsonOutputFormatter>();
-
-            }).SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
