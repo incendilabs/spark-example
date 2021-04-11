@@ -1,4 +1,4 @@
-# Spark Tutorial Project
+# Spark FHIR Server Tutorial Example
 This is the Spark FHIR Server documentation example.
 
 Documentation can be found here:  https://firelyteam.github.io/spark/
