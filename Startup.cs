@@ -35,7 +35,7 @@ namespace spark_example
 
             services.AddMongoFhirStore(new StoreSettings
             {
-                ConnectionString = "mongodb://localhost/spark-r4"
+                ConnectionString = "mongodb://localhost/spark"
             });
         }
 
