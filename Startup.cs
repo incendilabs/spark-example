@@ -29,7 +29,7 @@ namespace spark_example
 
             services.AddFhir(new SparkSettings
             {
-                Endpoint = new Uri("https://localhost:5001/fhir")
+                Endpoint = new Uri("https://localhost:5001")
             },
             options =>
             {
