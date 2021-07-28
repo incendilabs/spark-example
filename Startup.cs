@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Spark.Engine;
@@ -26,11 +27,16 @@ namespace spark_example
                     policy.AllowAnyHeader();
                 }));
 
-            services.AddFhir(new SparkSettings 
+            services.AddFhir(new SparkSettings
             {
-                Endpoint = new Uri("https://localhost:5001/fhir") 
-            }, 
-            options => options.EnableEndpointRouting = false
+                Endpoint = new Uri("https://localhost:5001/fhir")
+            },
+            options =>
+            {
+                options.EnableEndpointRouting = false;
+                options.InputFormatters.RemoveType<SystemTextJsonInputFormatter>();
+                options.OutputFormatters.RemoveType<SystemTextJsonOutputFormatter>();
+            }
             ).SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
             services.AddMongoFhirStore(new StoreSettings
