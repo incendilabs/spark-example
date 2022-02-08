@@ -5,12 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Spark.Engine.R4" Version="1.5.10" />
-    <PackageReference Include="Spark.Mongo.R4" Version="1.5.10" />
+    <PackageReference Include="Spark.Engine.R4" Version="1.5.11" />
+    <PackageReference Include="Spark.Mongo.R4" Version="1.5.11" />
   </ItemGroup>
 
 </Project>
