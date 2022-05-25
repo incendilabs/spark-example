@@ -1,8 +1,9 @@
 ﻿using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Spark.Engine;
@@ -37,12 +38,16 @@ namespace spark_example
                 options.InputFormatters.RemoveType<SystemTextJsonInputFormatter>();
                 options.OutputFormatters.RemoveType<SystemTextJsonOutputFormatter>();
             }
-            ).SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+            );
 
             services.AddMongoFhirStore(new StoreSettings
             {
                 ConnectionString = "mongodb://localhost/spark"
             });
+
+            // Retain previous behavior of DateTime values defaulting to local time.
+            // FIXME: Remove this in the future.
+            services.AddControllersWithViews(options => options.ModelBinderProviders.RemoveType<DateTimeModelBinderProvider>());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
