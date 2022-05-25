@@ -1,4 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿/*
+ * Copyright (c) 2019-2022, Incendi (info@incendi.no)
+ *
+ * SPDX-License-Identifier: BSD-2-Clause
+ */
+
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Threading.Tasks;
 

@@ -1,4 +1,10 @@
-﻿using System;
+﻿/*
+ * Copyright (c) 2019-2022, Incendi (info@incendi.no)
+ *
+ * SPDX-License-Identifier: BSD-2-Clause
+ */
+
+using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Formatters;
