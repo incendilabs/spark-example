@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (c) 2019-2022, Incendi (info@incendi.no)
+ * Copyright (c) 2019-2023, Incendi (info@incendi.no)
  *
  * SPDX-License-Identifier: BSD-2-Clause
  */
