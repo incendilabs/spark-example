@@ -5,8 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Spark.Engine.R4" Version="2.2.0" />
-    <PackageReference Include="Spark.Mongo.R4" Version="2.2.0" />
+    <PackageReference Include="Spark.Engine.R4" Version="2.2.1" />
+    <PackageReference Include="Spark.Mongo.R4" Version="2.2.1" />
   </ItemGroup>
 
 </Project>
