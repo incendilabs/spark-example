@@ -8,32 +8,29 @@ using Microsoft.AspNetCore.Http;
 using System;
 using System.Threading.Tasks;
 
-namespace spark_example
+namespace spark_example;
+
+public class IgnoreRouteMiddleware
 {
-    public class IgnoreRouteMiddleware
+    private readonly RequestDelegate next;
+
+    // You can inject a dependency here that gives you access
+    // to your ignored route configuration.
+    public IgnoreRouteMiddleware(RequestDelegate next)
     {
+        this.next = next;
+    }
 
-        private readonly RequestDelegate next;
-
-        // You can inject a dependency here that gives you access
-        // to your ignored route configuration.
-        public IgnoreRouteMiddleware(RequestDelegate next)
+    public async Task Invoke(HttpContext context)
+    {
+        if (context.Request.Path.HasValue &&
+            context.Request.Path.Value.Contains("favicon.ico"))
         {
-            this.next = next;
+            context.Response.StatusCode = 404;
+
+            return;
         }
 
-        public async Task Invoke(HttpContext context)
-        {
-            if (context.Request.Path.HasValue &&
-                context.Request.Path.Value.Contains("favicon.ico"))
-            {
-
-                context.Response.StatusCode = 404;
-
-                return;
-            }
-
-            await next.Invoke(context);
-        }
+        await next.Invoke(context);
     }
 }

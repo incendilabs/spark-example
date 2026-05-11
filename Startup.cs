@@ -14,25 +14,28 @@ using Spark.Engine;
 using Spark.Engine.Extensions;
 using Spark.Mongo.Extensions;
 
-namespace spark_example
+namespace spark_example;
+
+public class Startup
 {
-    public class Startup
+    // This method gets called by the runtime. Use this method to add services to the container.
+    // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
+    public void ConfigureServices(IServiceCollection services)
     {
-        // This method gets called by the runtime. Use this method to add services to the container.
-        // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
-        public void ConfigureServices(IServiceCollection services)
-        {
-            // Set up a default policy for CORS that accepts any origin, method and header.
-            // only for test purposes.
-            services.AddCors(options =>
-                options.AddDefaultPolicy(policy =>
+        // Set up a default policy for CORS that accepts any origin, method and header.
+        // only for test purposes.
+        services.AddCors(options =>
+            options.AddDefaultPolicy(policy =>
                 {
                     policy.AllowAnyOrigin();
                     policy.AllowAnyMethod();
                     policy.AllowAnyHeader();
-                }));
+                }
+            )
+        );
 
-            services.AddFhir(new SparkSettings
+        services.AddFhir(
+            new SparkSettings
             {
                 Endpoint = new Uri("https://localhost:5001")
             },
@@ -42,24 +45,25 @@ namespace spark_example
                 options.InputFormatters.RemoveType<SystemTextJsonInputFormatter>();
                 options.OutputFormatters.RemoveType<SystemTextJsonOutputFormatter>();
             }
-            );
+        );
 
-            services.AddMongoFhirStore(new StoreSettings
+        services.AddMongoFhirStore(
+            new StoreSettings
             {
                 ConnectionString = "mongodb://localhost/spark"
-            });
-        }
-
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-        {
-            app.UseMiddleware<IgnoreRouteMiddleware>();
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
             }
+        );
+    }
 
-            app.UseFhir(r => r.MapRoute(name: "default", template: "{controller}/{id?}"));
+    // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+    {
+        app.UseMiddleware<IgnoreRouteMiddleware>();
+        if (env.IsDevelopment())
+        {
+            app.UseDeveloperExceptionPage();
         }
+
+        app.UseFhir(r => r.MapRoute(name: "default", template: "{controller}/{id?}"));
     }
 }
