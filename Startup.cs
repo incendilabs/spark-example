@@ -12,7 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Spark.Engine;
 using Spark.Engine.Extensions;
-using Spark.Mongo.Extensions;
+using Spark.Store.MongoDB.Extensions;
 
 namespace spark_example;
 
@@ -34,7 +34,7 @@ public class Startup
             )
         );
 
-        services.AddFhir(
+        services.AddFhirWithMvc(
             new SparkSettings
             {
                 Endpoint = new Uri("https://localhost:5001")
@@ -64,6 +64,6 @@ public class Startup
             app.UseDeveloperExceptionPage();
         }
 
-        app.UseFhir(r => r.MapRoute(name: "default", template: "{controller}/{id?}"));
+        app.UseFhirWithMvc(r => r.MapRoute(name: "default", template: "{controller}/{id?}"));
     }
 }
