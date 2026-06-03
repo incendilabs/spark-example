@@ -5,13 +5,18 @@
  */
 
 using System;
+using Hl7.Fhir.Model;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Formatters;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Spark.Engine;
+using Spark.Engine.Core;
 using Spark.Engine.Extensions;
+using Spark.Engine.Service.FhirServiceExtensions;
 using Spark.Store.MongoDB.Extensions;
 
 namespace spark_example;
@@ -31,6 +36,15 @@ public class Startup
                     policy.AllowAnyMethod();
                     policy.AllowAnyHeader();
                 }
+            )
+        );
+
+        services.Replace(
+            ServiceDescriptor.Transient<ICapabilityStatementService>(serviceProvider => new CapabilityStatementService(
+                    serviceProvider.GetRequiredService<IFhirModel>(),
+                    new ServerVersion(1, 0, 0),
+                    FHIRVersion.N0_4_0
+                )
             )
         );
 

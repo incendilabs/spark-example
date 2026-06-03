@@ -102,4 +102,18 @@ public class FhirController : ControllerBase
 
         return await _fhirService.SearchAsync(type, searchparams, start);
     }
+
+    [HttpGet]
+    [Route("metadata")]
+    public async Task<FhirResponse> Metadata()
+    {
+        return await _fhirService.CapabilityStatementAsync(_settings.Version).ConfigureAwait(false);
+    }
+
+    [HttpOptions]
+    [Route("")]
+    public async Task<FhirResponse> Options()
+    {
+        return await _fhirService.CapabilityStatementAsync(_settings.Version).ConfigureAwait(false);
+    }
 }
